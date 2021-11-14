@@ -77,15 +77,16 @@ void main()
   or_sr(0x8);	              /**< GIE (enable interrupts) */
   
   clearScreen(COLOR_BLUE);
-  while (1) {			/* forever */
-    if (redrawScreen) {
-      redrawScreen = 0;
-      update_shape();
-    }
-    P1OUT &= ~LED;	/* led off */
-    or_sr(0x10);	/**< CPU OFF */
-    P1OUT |= LED;	/* led on */
-  }
+  
+  //while (1) {			/* forever */
+  //if (redrawScreen) {
+  //  redrawScreen = 0;
+  //  update_shape();
+  //}
+  //P1OUT &= ~LED;	/* led off */
+  //or_sr(0x10);	/**< CPU OFF */
+  //P1OUT |= LED;	/* led on */
+  //}
 }
 
     
@@ -93,16 +94,20 @@ void main()
 void
 update_shape()
 {
-  static unsigned char row = screenHeight / 2, col = screenWidth / 2;
+  static unsigned char row = screenHeight / 2, col = screenWidth / 2;   // Middle
+  static int colStep = 5, rowStep = 5;
   static char blue = 31, green = 0, red = 31;
   static unsigned char step = 0;
   if (switches & SW4) return;
-  if (step <= 60) {
+  if (step <= 10) {   // How often the shape is drawn, reach max size
     int startCol = col - step;
     int endCol = col + step;
     int width = 1 + endCol - startCol;
     // a color in this BGR encoding is BBBB BGGG GGGR RRRR
     unsigned int color = (blue << 11) | (green << 5) | red;
+    blue++; blue &= 31;
+    green += 2; green &= 63;
+    
     fillRectangle(startCol, row+step, width, 1, color);
     fillRectangle(startCol, row-step, width, 1, color);
     if (switches & SW3) green = (green + 1) % 64;
@@ -110,11 +115,18 @@ update_shape()
     if (switches & SW1) red = (red - 3) % 32;
     step ++;
   } else {
+    col += colStep;   // Moves shape to right
+    row += rowStep;   // Moves shape down
+    if (col < 20 || col >= (screenWidth - 20)){
+      col -= colStep; colStep = -colStep;
+    }
+    if (row < 20 || row > (screenHeight - 20)){
+	row -= rowStep; rowStep = -rowStep;
+    }
      clearScreen(COLOR_BLUE);
      step = 0;
   }
 }
-
 
 /* Switch on S2 */
 void
