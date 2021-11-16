@@ -4,6 +4,8 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 
+typedef unsigned char u_char;
+typedef unsigned int u_int;
 
 /** Draw single pixel at x,row 
  *
@@ -11,7 +13,7 @@
  *  \param row Row to draw to
  *  \param colorBGR Color of pixel in BGR
  */
-void drawPixel(u_char col, u_char row, u_int colorBGR) 
+void drawPixel(u_char col, u_char row, u_int colorBGR)
 {
   lcd_setArea(col, row, col, row);
   lcd_writeColor(colorBGR);
@@ -25,7 +27,7 @@ void drawPixel(u_char col, u_char row, u_int colorBGR)
  *  \param height height of rectangle
  *  \param colorBGR Color of rectangle in BGR
  */
-void fillRectangle(u_char colMin, u_char rowMin, u_char width, u_char height, 
+void fillRectangle(u_char colMin, u_char rowMin, u_char width, u_char height,
 		   u_int colorBGR)
 {
   u_char colLimit = colMin + width, rowLimit = rowMin + height;
@@ -35,13 +37,14 @@ void fillRectangle(u_char colMin, u_char rowMin, u_char width, u_char height,
   while ((c++) < total) {
     lcd_writeColor(colorBGR);
   }
+
 }
 
 /** Clear screen (fill with color)
  *  
  *  \param colorBGR The color to fill screen
  */
-void clearScreen(u_int colorBGR) 
+void clearScreen(u_int colorBGR)
 {
   u_char w = screenWidth;
   u_char h = screenHeight;
@@ -51,8 +54,8 @@ void clearScreen(u_int colorBGR)
 /** 5x7 font - this function draws background pixels
  *  Adapted from RobG's EduKit
  */
-void drawChar5x7(u_char rcol, u_char rrow, char c, 
-     u_int fgColorBGR, u_int bgColorBGR) 
+void drawChar5x7(u_char rcol, u_char rrow, char c,
+		 u_int fgColorBGR, u_int bgColorBGR)
 {
   u_char col = 0;
   u_char row = 0;
@@ -85,7 +88,7 @@ void drawChar5x7(u_char rcol, u_char rrow, char c,
  *  \param bgColorBGR Background color in BGR
  */
 void drawString5x7(u_char col, u_char row, char *string,
-		u_int fgColorBGR, u_int bgColorBGR)
+		   u_int fgColorBGR, u_int bgColorBGR)
 {
   u_char cols = col;
   while (*string) {
@@ -93,7 +96,6 @@ void drawString5x7(u_char col, u_char row, char *string,
     cols += 6;
   }
 }
-
 
 /** Draw rectangle outline
  *  
@@ -113,50 +115,4 @@ void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
   /**< left & right */
   fillRectangle(colMin, rowMin, 1, height, colorBGR);
   fillRectangle(colMin + width, rowMin, 1, height, colorBGR);
-}
-
-void drawCreeper (short startC, short startR, short colS, short rowS){
-  
-  // Draw Creeper Face
-  for (short col = 0; col<= colS; col++){ // 80 max colS
-    for (short row = 0; row <= rowS; row++){  // 80 max colR
-      drawPixel(startC + col, startR + row, COLOR_GREEN);
-    }
-  }
-  
-  // Eyes
-  for (short col = 0; col <= colS * .25; col++){  // 20  1/4 of colS
-    float c = colS * .125;
-    float r = rowS * .125;
-    for (short row = 0; row <= rowS * .25; row++){  // 20  1/4 of rowS
-      drawPixel(startC + col + c, startR + row + r, COLOR_BLACK);  // col + 1/8 of colS and row + 1/8 rowS
-    }
-  }
-   
-   for (int col = 0; col <= colS * .25; col++){
-    for (int row = 0; row <= rowS * .25; row++){
-      drawPixel(startC + col + (colS * .625), startR + row + (rowS * .125), COLOR_BLACK);  // col + 5/8 of colS and row + 1/10 rowS
-    }
-  }
-
-   
-  // Base mouth
-   for (int col = 0; col <= colS * .25; col++){  // 1/4 of colS
-     for (int row = 0; row <= rowS * .375; row++){ // 3/8 of rowS
-       drawPixel(startC + col + (colS * .375),startR + row + (rowS * .375), COLOR_BLACK);
-    }
-  }
-  
-  // Side mouth
-   for (int col = 0; col <= colS * .125; col++){
-    for (int row = 0; row <= rowS * .375; row++){
-      drawPixel(startC + col + (colS * .25), startR + row + (rowS * .5), COLOR_BLACK);
-    }
-  }
-  
-  for (int col = 0; col <= colS * .125; col++){
-    for (int row = 0; row <= rowS * .375; row++){
-      drawPixel(startC + col + (colS * .625),startR + row + (rowS * .5), COLOR_BLACK);
-    }
-  }
 }

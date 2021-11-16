@@ -7,6 +7,10 @@ int sw1Down = 0;
 int sw2Down = 0;
 int sw3Down = 0;
 int sw4Down = 0;
+int oddPress1 = 0;
+int oddPress2 = 0;
+int oddPress3 = 0;
+int oddPress4 = 0;
 
 static char switch_update_interrupt_sense()
 {
@@ -44,7 +48,6 @@ void switch_interrupt_handler()
   sw2Down = (p2val & SW2) ? 0 : 1;
   sw3Down = (p2val & SW3) ? 0 : 1;
   sw4Down = (p2val & SW4) ? 0 : 1;
-
   
   // Press button once to turn off, press again to turn off
   if (prev1 != sw1Down && sw1Down){

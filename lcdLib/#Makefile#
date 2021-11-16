@@ -1,3 +1,4 @@
+
 all: libLcd.a lcddemo.elf
 
 CPU             = msp430g2553

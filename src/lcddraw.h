@@ -5,6 +5,9 @@
 #ifndef lcddraw_included
 #define lcddraw_included
 
+typedef unsigned char u_char;
+typedef unsigned int u_int;
+
 /** Draw single pixel at col, row 
  *
  *  \param col Column to draw to
@@ -41,13 +44,13 @@ void clearScreen(u_int colorBGR);
  *  \param fgColorBGR Foreground color in BGR
  *  \param bgColorBGR Background color in BGR
  */
-void drawString5x7(u_char col, u_char row, char *string, 
+void drawString5x7(u_char col, u_char row, char *string,
 		   u_int fgColorBGR, u_int bgColorBGR);
 
 /** 5x7 font - this function draws background pixels
  *  Adapted from RobG's EduKit
  */
-void drawChar5x7(u_char col, u_char row, char c, 
+void drawChar5x7(u_char col, u_char row, char c,
 		 u_int fgColorBGR, u_int bgColorBGR);
 
 /** Draw rectangle outline
@@ -59,9 +62,6 @@ void drawChar5x7(u_char col, u_char row, char c,
  *  \param colorBGR Color of rectangle in BGR
  */
 void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
-                     u_int colorBGR);
+		     u_int colorBGR);
 
-void drawCreeper (short startC, short startR, short colS, short rowS);
 #endif // included
-
-
