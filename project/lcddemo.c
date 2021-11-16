@@ -18,9 +18,9 @@ int main ()
   buzzer_init();
   led_init();
   lcd_init();
-  //enableWDTInterrupts();  // Enable period interrupt
+  enableWDTInterrupts();  // Enable period interrupt
 
-  // or_sr(0x8);   // GIE (enable interrupts)
+  or_sr(0x8);   // GIE (enable interrupts)
 
   clearScreen(COLOR_BLUE);
 
@@ -39,7 +39,6 @@ int main ()
   /*while (1){
     if (redrawScreen){
       redrawScreen = 0;
-      drawString5x7(10, 20, "The Legend of Zelda", COLOR_YELLOW, COLOR_DARK_OLIVE_GREEN);
       //if (oddPress1 == 1){
       //playSong();
       //}
@@ -48,7 +47,8 @@ int main ()
     or_sr(0x10);
     }*/
 }
-/*
+
+
 void wtd_c_handler()
 {
   static int interruptCount = 0;
@@ -60,4 +60,3 @@ void wtd_c_handler()
     interruptCount = 0;
   }
 }
-*/
