@@ -1,18 +1,15 @@
 #include <msp430.h>
 #include <libTimer.h>
 #include "lcdutils.h"
-#include "lcddraw.h"
-
-// WARNING: LCD DISPLAY USES P1.0.  Do not touch!!! 
+#include "lcddraw.h" 
+#include "switches.h"
 
 #define LED BIT6		/* note that bit zero req'd for display */
 
-#define SW1 1
-#define SW2 2
-#define SW3 4
-#define SW4 8
-
-#define SWITCHES 15
+oddPress1 = 0;
+oddPress2 = 0;
+oddPress3 = 0;
+oddPress4 = 0;
 
 static char 
 switch_update_interrupt_sense()
@@ -23,26 +20,6 @@ switch_update_interrupt_sense()
   P2IES &= (p2val | ~SWITCHES);	/* if switch down, sense up */
   return p2val;
 }
-
-void 
-switch_init()			/* setup switch */
-{  
-  P2REN |= SWITCHES;		/* enables resistors for switches */
-  P2IE |= SWITCHES;		/* enable interrupts from switches */
-  P2OUT |= SWITCHES;		/* pull-ups for switches */
-  P2DIR &= ~SWITCHES;		/* set switches' bits for input */
-  switch_update_interrupt_sense();
-}
-
-int switches = 0;
-
-void
-switch_interrupt_handler()
-{
-  char p2val = switch_update_interrupt_sense();
-  switches = ~p2val & SWITCHES;
-}
-
 
 // axis zero for col, axis 1 for row
 short drawPos[2] = {10,10}, controlPos[2] = {10,10};
@@ -98,7 +75,7 @@ update_shape()
   static int colStep = 5, rowStep = 5;
   static char blue = 31, green = 0, red = 31;
   static unsigned char step = 0;
-  if (switches & SW4) return;
+  if (oddPress4) return;
   if (step <= 10) {   // How often the shape is drawn, reach max size
     int startCol = col - step;
     int endCol = col + step;
@@ -110,9 +87,9 @@ update_shape()
     
     fillRectangle(startCol, row+step, width, 1, color);
     fillRectangle(startCol, row-step, width, 1, color);
-    if (switches & SW3) green = (green + 1) % 64;
-    if (switches & SW2) blue = (blue + 2) % 32;
-    if (switches & SW1) red = (red - 3) % 32;
+    if (oddPress3) green = (green + 1) % 64;
+    if (oddPress2) blue = (blue + 2) % 32;
+    if (oddPress1) red = (red - 3) % 32;
     step ++;
   } else {
     col += colStep;   // Moves shape to right

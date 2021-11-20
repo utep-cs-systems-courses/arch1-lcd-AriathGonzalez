@@ -1,16 +1,12 @@
 #include <msp430.h>
 #include "switches.h"
-#include "led.h"
+//#include "led.h"
 
 // To check if a button has been pressed
 int sw1Down = 0;
 int sw2Down = 0;
 int sw3Down = 0;
 int sw4Down = 0;
-int oddPress1 = 0;
-int oddPress2 = 0;
-int oddPress3 = 0;
-int oddPress4 = 0;
 
 static char switch_update_interrupt_sense()
 {
@@ -31,7 +27,7 @@ void switch_init()
   P2OUT |= SWITCHES;   // Pull-ups for switches
   P2DIR &= ~SWITCHES;   // Set switches' bits for input
   switch_update_interrupt_sense();
-  led_update();
+  //led_update();
 }
 
 void switch_interrupt_handler()
