@@ -4,6 +4,7 @@
 #include "lcddraw.h" 
 #include "switches.h"
 #include "led.h"
+#include "buzzer.h"
 
 oddPress1 = 0;
 oddPress2 = 0;
@@ -22,7 +23,7 @@ void wdt_c_handler()
   static int secCount = 0;
 
   secCount ++;
-  if (secCount >= 25) {		/* 10/sec */
+  if (secCount >= 250) {		
     secCount = 0;
     redrawScreen = 1;
   }
@@ -38,6 +39,7 @@ void main()
   configureClocks();
   lcd_init();
   led_init();
+  buzzer_init();
   switch_init();
   
   enableWDTInterrupts();      /**< enable periodic interrupt */
@@ -66,6 +68,7 @@ void drawCreeper ()
   static unsigned char startR = screenWidth / 2;
 
   if (oddPress1){
+    //playSong();
     if (startC + colS == screenHeight)
       startC = 0;
     else
