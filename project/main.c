@@ -23,7 +23,8 @@ void wdt_c_handler()
   static int secCount = 0;
 
   secCount ++;
-  if (secCount >= 250) {		
+  if (secCount >= 63) {
+    playSong();
     secCount = 0;
     redrawScreen = 1;
   }
@@ -68,7 +69,6 @@ void drawCreeper ()
   static unsigned char startR = screenWidth / 2;
 
   if (oddPress1){
-    //playSong();
     if (startC + colS == screenHeight)
       startC = 0;
     else
