@@ -7,10 +7,6 @@ int sw1Down = 0;
 int sw2Down = 0;
 int sw3Down = 0;
 int sw4Down = 0;
-int oddPress1 = 0;
-int oddPress2 = 0;
-int oddPress3 = 0;
-int oddPress4 = 0;
 
 static char switch_update_interrupt_sense()
 {
