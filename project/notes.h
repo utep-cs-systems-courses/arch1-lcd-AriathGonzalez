@@ -14,6 +14,6 @@
 #define FSHARP 5420
 #define D 6825
 #define G 5102
-#define C 7662
+#define _C 7662
 
 #endif

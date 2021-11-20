@@ -9,10 +9,11 @@
 #include "switches.h"
 
 short redrawScreen = 1;
+short centerR = LONG_EDGE_PIXELS / 2;   // Center coord for the rows
+short centerC = SHORT_EDGE_PIXELS / 2;  // Center coord for the cols 
 
 int main ()
 {
-  greenOn(1);
   configureClocks();
   switch_init();
   buzzer_init();
@@ -22,11 +23,12 @@ int main ()
 
   or_sr(0x8);   // GIE (enable interrupts)
 
+  greenOn(1);
   clearScreen(COLOR_BLUE);
 
-  short centerR = LONG_EDGE_PIXELS / 2;   // Center coord for the rows
-  short centerC = SHORT_EDGE_PIXELS / 2;  // Center coord for the cols
-  
+  //short centerR = LONG_EDGE_PIXELS / 2;   // Center coord for the rows
+  // short centerC = SHORT_EDGE_PIXELS / 2;  // Center coord for the cols
+  /*
   for (int c = 30; c >= 0; c--) {
     for (int j = 0; j <= c; j++){
       short r = 30 -c;   // Determine length of row
@@ -35,7 +37,8 @@ int main ()
       drawPixel (centerC -j, centerR + r, COLOR_RED);
       drawPixel (centerC - j, centerR - r, COLOR_YELLOW);
     }
-  }
+    }*/
+  
   /*while (1){
     if (redrawScreen){
       redrawScreen = 0;
@@ -52,7 +55,6 @@ int main ()
 void wtd_c_handler()
 {
   static int interruptCount = 0;
-
   interruptCount++;
   
   if ((interruptCount % 250) == 0){
