@@ -115,6 +115,7 @@ void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
   fillRectangle(colMin + width, rowMin, 1, height, colorBGR);
 }
 
+/*
 void drawCreeper (short startC, short startR, short colS, short rowS){
   
   // Draw Creeper Face
@@ -160,3 +161,4 @@ void drawCreeper (short startC, short startR, short colS, short rowS){
     }
   }
 }
+*/

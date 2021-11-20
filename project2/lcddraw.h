@@ -61,7 +61,7 @@ void drawChar5x7(u_char col, u_char row, char c,
 void drawRectOutline(u_char colMin, u_char rowMin, u_char width, u_char height,
                      u_int colorBGR);
 
-void drawCreeper (short startC, short startR, short colS, short rowS);
+//void drawCreeper (short startC, short startR, short colS, short rowS);
 #endif // included
 
 

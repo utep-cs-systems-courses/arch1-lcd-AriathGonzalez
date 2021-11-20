@@ -27,8 +27,9 @@ void wdt_c_handler()
     redrawScreen = 1;
   }
 }
-  
-void update_shape();
+
+void drawCreeper();
+//void update_shape();
 
 void main()
 {
@@ -47,7 +48,8 @@ void main()
   while (1) {			/* forever */
     if (redrawScreen) {
       redrawScreen = 0;
-      update_shape();
+      drawCreeper();
+      // update_shape();
     }
     greenOn(0);	/* led off */
     or_sr(0x10);	/**< CPU OFF */
@@ -55,8 +57,72 @@ void main()
   }
 }
 
-    
-    
+
+void drawCreeper ()
+{
+  static unsigned char colS = 40;
+  static unsigned char rowS = 40;
+  static unsigned char startC = screenHeight / 2;
+  static unsigned char startR = screenWidth / 2;
+
+  if (oddPress1){
+    if (startC + colS == screenHeight)
+      startC = 0;
+    else
+      startC += 5;
+  }
+  if (oddPress2){
+    if (startC == 0)
+      startC = screenHeight / 2;
+    else
+      startC -= 5;
+  }
+  
+  // Draw Creeper Face
+  for (short col = 0; col<= colS; col++){ // 80 max colS
+    for (short row = 0; row <= rowS; row++){  // 80 max colR
+      drawPixel(startC + col, startR + row, COLOR_GREEN);
+    }
+  }
+
+  // Eyes
+  for (short col = 0; col <= colS * .25; col++){  // 20  1/4 of colS
+    float c = colS * .125;
+    float r = rowS * .125;
+    for (short row = 0; row <= rowS * .25; row++){  // 20  1/4 of rowS
+      drawPixel(startC + col + c, startR + row + r, COLOR_BLACK);  // col + 1/8 of colS and row + 1/8 rowS
+
+    }
+  }
+
+  for (int col = 0; col <= colS * .25; col++){
+    for (int row = 0; row <= rowS * .25; row++){
+      drawPixel(startC + col + (colS * .625), startR + row + (rowS * .125), COLOR_BLACK);  // col + 5/8 of colS and row + 1/10 rowS
+    }
+  }
+
+  // Base mouth
+  for (int col = 0; col <= colS * .25; col++){  // 1/4 of colS
+    for (int row = 0; row <= rowS * .375; row++){ // 3/8 of rowS
+      drawPixel(startC + col + (colS * .375),startR + row + (rowS * .375), COLOR_BLACK);
+    }
+  }
+
+  // Side mouth
+  for (int col = 0; col <= colS * .125; col++){
+    for (int row = 0; row <= rowS * .375; row++){
+      drawPixel(startC + col + (colS * .25), startR + row + (rowS * .5), COLOR_BLACK);
+    }
+  }
+
+  for (int col = 0; col <= colS * .125; col++){
+    for (int row = 0; row <= rowS * .375; row++){
+      drawPixel(startC + col + (colS * .625),startR + row + (rowS * .5), COLOR_BLACK);
+    }
+  }
+  clearScreen(COLOR_BLUE);
+}
+/*
 void
 update_shape()
 {
@@ -93,4 +159,4 @@ update_shape()
      step = 0;
   }
 }
-
+*/
