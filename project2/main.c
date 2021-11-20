@@ -3,23 +3,12 @@
 #include "lcdutils.h"
 #include "lcddraw.h" 
 #include "switches.h"
-
-#define LED BIT6		/* note that bit zero req'd for display */
+#include "led.h"
 
 oddPress1 = 0;
 oddPress2 = 0;
 oddPress3 = 0;
 oddPress4 = 0;
-
-static char 
-switch_update_interrupt_sense()
-{
-  char p2val = P2IN;
-  /* update switch interrupt to detect changes from current buttons */
-  P2IES |= (p2val & SWITCHES);	/* if switch up, sense down */
-  P2IES &= (p2val | ~SWITCHES);	/* if switch down, sense up */
-  return p2val;
-}
 
 // axis zero for col, axis 1 for row
 short drawPos[2] = {10,10}, controlPos[2] = {10,10};
@@ -44,10 +33,10 @@ void update_shape();
 void main()
 {
   
-  P1DIR |= LED;		/**< Green led on when CPU on */
-  P1OUT |= LED;
+  greenOn(1);
   configureClocks();
   lcd_init();
+  led_init();
   switch_init();
   
   enableWDTInterrupts();      /**< enable periodic interrupt */
@@ -60,9 +49,9 @@ void main()
       redrawScreen = 0;
       update_shape();
     }
-    P1OUT &= ~LED;	/* led off */
+    greenOn(0);	/* led off */
     or_sr(0x10);	/**< CPU OFF */
-    P1OUT |= LED;	/* led on */
+    greenOn(1);	/* led on */
   }
 }
 
