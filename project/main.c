@@ -69,16 +69,16 @@ void drawCreeper ()
   static unsigned char startR = screenWidth / 2;
 
   if (oddPress1){
-    if (startC + colS == screenHeight)
-      startC = 0;
-    else
-      startC += 5;
-  }
-  if (oddPress2){
     if (startC == 0)
       startC = screenHeight / 2;
     else
       startC -= 5;
+  }
+  if (oddPress2){
+    if (startC + colS == screenHeight)
+      startC = 0;
+    else
+      startC += 5;
   }
   
   // Draw Creeper Face
