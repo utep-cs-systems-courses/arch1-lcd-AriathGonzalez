@@ -68,23 +68,44 @@ void drawCreeper ()
   static unsigned char startC = screenHeight / 2;
   static unsigned char startR = screenWidth / 2;
 
+  // Colors for creeper
+  static char blue = 7, green = 63, red = 7;
+  static char blue2 = 0, green2 = 0, red2 = 0;
+  
+  unsigned int baseC = (blue << 11) | (green << 5) | red;
+  unsigned int secondC = (blue2 << 11) | (green2 << 5) | red2;
+  
+  // Move to the left
   if (oddPress1){
     if (startC == 0)
       startC = screenHeight / 2;
     else
       startC -= 5;
   }
+  // Move to the right
   if (oddPress2){
     if (startC + colS == screenHeight)
       startC = 0;
     else
       startC += 5;
   }
+  // Change base color
+  if (oddPress3){
+    green = (green - 1) % 64;
+    green2 = (green2 + 1) % 64;
+    blue = (blue + 2) % 32;
+    blue2 = (blue2 - 2) % 32;
+    red = (red + 3) % 32;
+    red2 = (red2 - 3) % 32;
+  }
+  // Change secondary colors
+  if (oddPress4){
+  }
   
   // Draw Creeper Face
   for (short col = 0; col<= colS; col++){ // 80 max colS
     for (short row = 0; row <= rowS; row++){  // 80 max colR
-      drawPixel(startC + col, startR + row, COLOR_GREEN);
+      drawPixel(startC + col, startR + row, baseC);
     }
   }
 
@@ -124,14 +145,14 @@ void drawCreeper ()
   // Draw Body
   for (short col = 0; col <= colS * .75; col++){
     for (short row = 0; row <= rowS; row++){
-      drawPixel(startC + col + (colS * .125), startR + row + rowS, COLOR_GREEN);
+      drawPixel(startC + col + (colS * .125), startR + row + rowS, baseC);
     }
   }
 
   // Draw Feet
   for (short col = 0; col <= colS * .75; col++){
     for (short row = 0; row <= rowS * .25; row++){
-      drawPixel(startC + col + (colS * .125), startR + row + (rowS * 2), COLOR_WHITE);
+      drawPixel(startC + col + (colS * .125), startR + row + (rowS * 2), secondC);
     }
   }
 
