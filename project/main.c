@@ -24,7 +24,7 @@ void wdt_c_handler()
 
   secCount ++;
   if (secCount >= 63) {
-    playSong();
+    //playSong();
     secCount = 0;
     redrawScreen = 1;
   }
@@ -63,8 +63,8 @@ void main()
 
 void drawCreeper ()
 {
-  static unsigned char colS = 40;
-  static unsigned char rowS = 40;
+  static unsigned char colS = 20;
+  static unsigned char rowS = 20;
   static unsigned char startC = screenHeight / 2;
   static unsigned char startR = screenWidth / 2;
 
@@ -90,37 +90,54 @@ void drawCreeper ()
 
   // Eyes
   for (short col = 0; col <= colS * .25; col++){  // 20  1/4 of colS
-    float c = colS * .125;
-    float r = rowS * .125;
     for (short row = 0; row <= rowS * .25; row++){  // 20  1/4 of rowS
-      drawPixel(startC + col + c, startR + row + r, COLOR_BLACK);  // col + 1/8 of colS and row + 1/8 rowS
-
+      drawPixel(startC + col + (colS * .125), startR + row + (rowS * .125), COLOR_BLACK);  // col + 1/8 of colS and row + 1/8 rowS
     }
   }
 
-  for (int col = 0; col <= colS * .25; col++){
-    for (int row = 0; row <= rowS * .25; row++){
+  for (short col = 0; col <= colS * .25; col++){
+    for (short row = 0; row <= rowS * .25; row++){
       drawPixel(startC + col + (colS * .625), startR + row + (rowS * .125), COLOR_BLACK);  // col + 5/8 of colS and row + 1/10 rowS
     }
   }
 
   // Base mouth
-  for (int col = 0; col <= colS * .25; col++){  // 1/4 of colS
-    for (int row = 0; row <= rowS * .375; row++){ // 3/8 of rowS
+  for (short col = 0; col <= colS * .25; col++){  // 1/4 of colS
+    for (short row = 0; row <= rowS * .375; row++){ // 3/8 of rowS
       drawPixel(startC + col + (colS * .375),startR + row + (rowS * .375), COLOR_BLACK);
     }
   }
 
   // Side mouth
-  for (int col = 0; col <= colS * .125; col++){
-    for (int row = 0; row <= rowS * .375; row++){
+  for (short col = 0; col <= colS * .125; col++){
+    for (short row = 0; row <= rowS * .375; row++){
       drawPixel(startC + col + (colS * .25), startR + row + (rowS * .5), COLOR_BLACK);
     }
   }
 
-  for (int col = 0; col <= colS * .125; col++){
-    for (int row = 0; row <= rowS * .375; row++){
+  for (short col = 0; col <= colS * .125; col++){
+    for (short row = 0; row <= rowS * .375; row++){
       drawPixel(startC + col + (colS * .625),startR + row + (rowS * .5), COLOR_BLACK);
+    }
+  }
+
+  // Draw Body
+  for (short col = 0; col <= colS * .75; col++){
+    for (short row = 0; row <= rowS; row++){
+      drawPixel(startC + col + (colS * .125), startR + row + rowS, COLOR_GREEN);
+    }
+  }
+
+  // Draw Feet
+  for (short col = 0; col <= colS * .75; col++){
+    for (short row = 0; row <= rowS * .25; row++){
+      drawPixel(startC + col + (colS * .125), startR + row + (rowS * 2), COLOR_WHITE);
+    }
+  }
+
+  for (short col = 0; col <= colS * .75; col++) {
+    for (short row = 0; row <= rowS *.25; row++){
+      drawPixel(startC + col + (colS * .125), startR + row + (rowS * 2.25), COLOR_BLACK);
     }
   }
   clearScreen(COLOR_BLUE);
