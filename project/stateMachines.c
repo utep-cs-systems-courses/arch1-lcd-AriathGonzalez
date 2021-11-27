@@ -258,7 +258,7 @@ void playSong3()
 {
   static char currNote = 0;
   // All notes of song, 0s are for break in between notes
-  int notes[28] = {C, A, C, 0, B, 0, C, B, 0, G, G, G, 0, A, E, D, 0, C, 0, B, 0, C, B, 0, G, G, G,                   0};
+  int notes[28] = {CNOTE, A, CNOTE, 0, B, 0, CNOTE, B, 0, G, G, G, 0, A, E, D, 0, CNOTE, 0, B, 0, CNOTE, B, 0, G, G, G,                   0};
   int n = 28;
 
   if (currNote < n){

@@ -11,22 +11,41 @@ oddPress2 = 0;
 oddPress3 = 0;
 oddPress4 = 0;
 
-// axis zero for col, axis 1 for row
-short drawPos[2] = {10,10}, controlPos[2] = {10,10};
-short velocity[2] = {3,8}, limits[2] = {screenWidth-36, screenHeight-8};
+static unsigned char colS = 20;
+static unsigned char rowS = 20;
+static unsigned char startC = screenHeight / 2;
+static unsigned char startR = screenWidth / 2;
+// Colors for creeper
+static char blue = 7, green = 63, red = 7;
+static char blue2 = 0, green2 = 0, red2 = 0;
 
-short redrawScreen = 1;
-u_int controlFontColor = COLOR_GREEN;
+short redrawScreen = 0;
 
 void wdt_c_handler()
 {
   static int secCount = 0;
 
-  secCount ++;
-  if (secCount >= 63) {
-    //playSong();
-    secCount = 0;
+  secCount++;
+
+  if (secCount >= 63 && oddPress1 == 1){
+    buzzer_set_period(0);
     redrawScreen = 1;
+    secCount = 0;
+  }
+  if (secCount >= 63 && oddPress2 == 1){
+    buzzer_set_period(0);
+    redrawScreen = 1;
+    secCount = 0;
+  }
+  if (secCount >= 63 && oddPress3 == 1){
+    buzzer_set_period(0);
+    redrawScreen = 1;
+    secCount = 0;
+  }
+  if (secCount >= 63 && oddPress4 == 1){
+    redrawScreen = 1;
+    playSong();
+    secCount = 0;
   }
 }
 
@@ -35,7 +54,6 @@ void drawCreeper();
 
 void main()
 {
-  
   greenOn(1);
   configureClocks();
   lcd_init();
@@ -47,12 +65,40 @@ void main()
   or_sr(0x8);	              /**< GIE (enable interrupts) */
   
   clearScreen(COLOR_BLUE);
-  
   while (1) {			/* forever */
     if (redrawScreen) {
+      // Move to the left
+      if (oddPress1){
+	if (startC == 0)
+	  startC = screenHeight / 2;
+	else
+	  startC -= 5;
+	drawCreeper();
+      }
+      // Move to the right
+      else if (oddPress2){
+	if (startC + colS == screenHeight)
+	  startC = 0;
+	else
+	  startC += 5;
+	drawCreeper();
+      }
+      // Change base color
+      else if (oddPress3){
+	green = (green - 1) % 64;
+	green2 = (green2 + 1) % 64;
+	blue = (blue + 2) % 32;
+	blue2 = (blue2 - 2) % 32;
+	red = (red + 3) % 32;
+	red2 = (red2 - 3) % 32;
+	drawCreeper();
+      }
+      // Change secondary colors
+      else if (oddPress4){
+	drawString11x16(10, 20, "GAME OVER", COLOR_YELLOW, COLOR_DARK_OLIVE_GREEN);
+	drawCreeper();
+      }
       redrawScreen = 0;
-      drawCreeper();
-      // update_shape();
     }
     greenOn(0);	/* led off */
     or_sr(0x10);	/**< CPU OFF */
@@ -62,45 +108,9 @@ void main()
 
 
 void drawCreeper ()
-{
-  static unsigned char colS = 20;
-  static unsigned char rowS = 20;
-  static unsigned char startC = screenHeight / 2;
-  static unsigned char startR = screenWidth / 2;
-
-  // Colors for creeper
-  static char blue = 7, green = 63, red = 7;
-  static char blue2 = 0, green2 = 0, red2 = 0;
-  
+{ 
   unsigned int baseC = (blue << 11) | (green << 5) | red;
   unsigned int secondC = (blue2 << 11) | (green2 << 5) | red2;
-  
-  // Move to the left
-  if (oddPress1){
-    if (startC == 0)
-      startC = screenHeight / 2;
-    else
-      startC -= 5;
-  }
-  // Move to the right
-  if (oddPress2){
-    if (startC + colS == screenHeight)
-      startC = 0;
-    else
-      startC += 5;
-  }
-  // Change base color
-  if (oddPress3){
-    green = (green - 1) % 64;
-    green2 = (green2 + 1) % 64;
-    blue = (blue + 2) % 32;
-    blue2 = (blue2 - 2) % 32;
-    red = (red + 3) % 32;
-    red2 = (red2 - 3) % 32;
-  }
-  // Change secondary colors
-  if (oddPress4){
-  }
   
   // Draw Creeper Face
   for (short col = 0; col<= colS; col++){ // 80 max colS
