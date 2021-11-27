@@ -1,14 +1,14 @@
 	.arch msp430g2553
 	.p2align 1,0
 
-	.data
-dimState:	word 0
-
 	.text
 jt:
 	.word case0
 	.word case1
 	.word case2
+	
+	.data
+dimState:	word 0
 
 	.text
 	.extern redDim25
