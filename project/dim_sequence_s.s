@@ -19,8 +19,8 @@ dimState:	word 0
 	.extern greenDim75
 	.global dim_sequence
 dim_sequence:
-	cmp #3, dimState	; if out of range of table
-	jnc out
+	cmp #3, &dimState	; if out of range of table
+	jc out
 	mov &dimState, r12	; move copy of dimState into register 12
 	add r12, r12		; multiply register by 2
 	mov jt(r12), r0		; jump
